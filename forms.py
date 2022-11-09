@@ -7,8 +7,8 @@ class AnalyserForm(Form):
     TODO: Берем текст из файла или вставляем в поле
     FIXME: Не отправлять форму с пустыми частями речи
     """
-    source_file_path = forms.FileField(label="путь к файлу с текстом:")
-    destination_file_path = forms.FileField(label="путь сохранения облака слов:")
+    #source_file_path = forms.FileField(label="путь к файлу с текстом:")
+    #destination_file_path = forms.FileField(label="путь сохранения облака слов:")
     parts_of_speech = [
         ("NOUN", "существительные"),
         ("ADJF", "прилагательные (полные)"),
@@ -23,7 +23,5 @@ class AnalyserForm(Form):
         required=True,
     )
     words_num = forms.IntegerField(label="Количество слов", max_value=100, min_value=1)
-    wordcloud_width = forms.IntegerField(label="Ширина картинки", max_value=100, min_value=1)
-    wordcloud_height = forms.IntegerField(label="Высота картинки", max_value=100, min_value=1)
-    wordcloud_color = None
-    
+    wordcloud_width = forms.IntegerField(label="Ширина картинки", max_value=1920, min_value=1)
+    wordcloud_height = forms.IntegerField(label="Высота картинки", max_value=1080, min_value=1)

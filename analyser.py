@@ -20,6 +20,7 @@ class Analyser:
         wordcloud_background_color="black"
     ):
         self.source_file_path = source_file_path
+        self.dest_file_path = dest_file_path
         self.wordcloud_width = wordcloud_width
         self.wordcloud_height = wordcloud_height
         self.wordcloud_background_color = wordcloud_background_color
@@ -28,6 +29,7 @@ class Analyser:
         self.make_normalized_words(parts_of_speech)
         self.make_most_frequent_words(words_num)
         self.make_wordcloud()
+        self.save_wordcloud_to_file()
 
 
     def make_text_from_file(self):  # неточное название
@@ -110,11 +112,11 @@ class Analyser:
             self.most_frequent_words
         )
 
-    def save_wordcloud_to_file(self, dest_file_path):
+    def save_wordcloud_to_file(self):
         """
         сохраняет Wordcloud в файл filename
         """
-        self.wordcloud.to_file(dest_file_path)
+        self.wordcloud.to_file(self.dest_file_path)
         print("Done!")
 
 
