@@ -12,30 +12,34 @@ class Analyser:
     def __init__(
         self,
         source_file_path="",
-        parts_of_speech=[],
+        parts_of_speech=["NOUN"],
         words_num=10,
-        dest_file_path=""
+        dest_file_path="",
+        wordcloud_width="1920",
+        wordcloud_height="1080",
+        wordcloud_background_color="black"
     ):
         self.source_file_path = source_file_path
-
-        
+        self.wordcloud_width = wordcloud_width
+        self.wordcloud_height = wordcloud_height
+        self.wordcloud_background_color = wordcloud_background_color
         self.make_text_from_file()
         self.make_words_from_text()
-        self.make_normalized_words("NOUN", "VERB")
-        self.make_most_frequent_words(5)
+        self.make_normalized_words(parts_of_speech)
+        self.make_most_frequent_words(words_num)
         self.make_wordcloud()
-        self.save_wordcloud_to_file()  # пробросить путь к файлу
+
 
     def make_text_from_file(self):  # неточное название
         """
         определяет расширение текстового файла,
         вызывает соответствуйющий метод для типов TXT, DOCX, FB2
         """
-        if self.file_path.endswith(".txt"):
+        if self.source_file_path.endswith(".txt"):
             self.make_text_from_txt()
-        elif self.file_path.endswith(".docx"):
+        elif self.source_file_path.endswith(".docx"):
             self.make_text_from_docx()
-        elif self.file_path.endswith(".fb2"):
+        elif self.source_file_path.endswith(".fb2"):
             self.make_text_from_fb2()
         else:
             # прервать выполнение при пустой строке
@@ -45,20 +49,20 @@ class Analyser:
         """
         Делает строку из TXT
         """
-        self.content = str(from_path(self.file_path).best())
+        self.content = str(from_path(self.source_file_path).best())
 
     def make_text_from_docx(self):
         """
         Делает строку из DOCX
         """
-        file = Document(self.file_path)
+        file = Document(self.source_file_path)
         self.content = " ".join([p.text for p in file.paragraphs])
 
     def make_text_from_fb2(self):
         """
         Делает строку из FB2
         """
-        with open(self.file_path, 'rb') as f:
+        with open(self.source_file_path, 'rb') as f:
             data = f.read()
         bs_data = BeautifulSoup(data, "xml")
         sections = bs_data.find_all('section')
@@ -70,7 +74,7 @@ class Analyser:
         """
         self.words = re.findall("[а-яё]+", self.content.lower())
 
-    def make_normalized_words(self, *parts_of_speech):
+    def make_normalized_words(self, parts_of_speech):
         """
         Создает список нормальных форм слов
         для определенных в part_of_speech частей речи.
@@ -84,7 +88,8 @@ class Analyser:
                 if part in parse.tag:
                     self.normalized_words.append(parse.normal_form)
 
-    def make_most_frequent_words(self, num=10):
+
+    def make_most_frequent_words(self, num):
         """
         Создает словарь длинной num из самых частых слов по убыванию частоты
         слово: частота
@@ -92,32 +97,34 @@ class Analyser:
         self.most_frequent_words = dict(Counter(
             self.normalized_words).most_common(num))
         
-    def make_wordcloud(
-        self,
-        width=1920,
-        height=1024,
-        bgcolor="black"
-    ):
+    def make_wordcloud(self):
         """
         Создает объект Wordcloud из словаря self.most_frequent_words
         """
         self.wordcloud = WordCloud(
-            width=width,
-            height=height,
-            background_color=bgcolor
+            width=self.wordcloud_width,
+            height=self.wordcloud_height,
+            background_color=self.wordcloud_background_color
         )
         self.wordcloud = self.wordcloud.generate_from_frequencies(
             self.most_frequent_words
         )
 
-    def save_wordcloud_to_file(self):
+    def save_wordcloud_to_file(self, dest_file_path):
         """
         сохраняет Wordcloud в файл filename
         """
-        file_path = r"C:\Users\DDT\Desktop\frequency_analyser_new-main\wordcloud.png"
-        self.wordcloud.to_file(file_path)
+        self.wordcloud.to_file(dest_file_path)
         print("Done!")
 
 
 if __name__ == "__main__":
-    analyser = Analyser()
+    analyser = Analyser(
+        source_file_path="C:/Users/DDT/Desktop/texts/text_short.txt",
+        dest_file_path="C:/Users/DDT/Desktop/wordcloud.png",
+        parts_of_speech=["NOUN"],
+        words_num=100,
+        wordcloud_width=800,
+        wordcloud_height=600,
+        wordcloud_background_color="#0000ff"
+    )
