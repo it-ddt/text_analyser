@@ -11,10 +11,6 @@
     <form action="" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <p>
-            <label for="wordcloud_color">цвет фона</label>
-            <input type="color" id="wordcloud_color" name="wordcloud_color" value="#f6b73c">
-        </p>
         <input type="submit" value="Сделать облако слов">
     </form>
     
