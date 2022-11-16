@@ -7,7 +7,7 @@ class AnalyserForm(Form):
     TODO: Берем текст из файла или вставляем в поле
     FIXME: Не отправлять форму с пустыми частями речи
     """
-    #source_file_path = forms.FileField(label="путь к файлу с текстом:")
+    source_file_content = forms.FileField(label="путь к файлу с текстом:")
     #destination_file_path = forms.FileField(label="путь сохранения облака слов:")
     parts_of_speech = [
         ("NOUN", "существительные"),

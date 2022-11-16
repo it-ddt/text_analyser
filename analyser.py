@@ -10,15 +10,19 @@ from charset_normalizer import from_path  # нормализуем кодиро�
 class Analyser:
     # Все аргументы в конструктор класса!
     def __init__(
-        self,
-        source_file_path="",
-        parts_of_speech=["NOUN"],
-        words_num=10,
-        dest_file_path="",
-        wordcloud_width="1920",
-        wordcloud_height="1080",
-        wordcloud_background_color="black"
+            self,
+            source_file_path="",
+            parts_of_speech=None,
+            words_num=None,
+            dest_file_path="",
+            wordcloud_width="1920",
+            wordcloud_height="1080",
+            wordcloud_background_color="black"
     ):
+        if not words_num:
+            raise ValueError("Не выбрано количество слов в картинке облака")
+        if not parts_of_speech:
+            raise ValueError("Части речи не выбраны, анализ текста невозможен")
         self.source_file_path = source_file_path
         self.dest_file_path = dest_file_path
         self.wordcloud_width = wordcloud_width
@@ -122,10 +126,9 @@ class Analyser:
 
 if __name__ == "__main__":
     analyser = Analyser(
-        source_file_path="C:/Users/DDT/Desktop/texts/text_short.txt",
+        source_file_path="C:/Users/DDT/Desktop/text_short.txt",
         dest_file_path="C:/Users/DDT/Desktop/wordcloud.png",
         parts_of_speech=["NOUN"],
-        words_num=100,
         wordcloud_width=800,
         wordcloud_height=600,
         wordcloud_background_color="#0000ff"
