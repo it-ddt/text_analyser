@@ -9,7 +9,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'text_analyser/style.css' %}">
 </head>
-<body>
-    <img src="../../static/text_analyser/wordcloud.jpg" alt="">
+<body style="background-color: {{ wordcloud_background_color }};">
+    <img src="{% static 'text_analyser/wordcloud.jpg' %}" alt="">
 </body>
 </html>

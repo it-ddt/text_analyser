@@ -8,10 +8,16 @@
 </head>
 <body>
     <h1>Анализатор текста</h1>
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Сделать облако слов">
+        <p>
+            <label for="color">цвет фона кратинки</label>
+            <input type="color" id="color" name="wordcloud_background_color">
+        </p>
+        <p>
+            <input type="submit" value="Сделать облако слов">
+        </p>
     </form>
     
 </body>
